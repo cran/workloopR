@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Vikram B. Baliga" />
+
+<meta name="date" content="2021-05-04" />
+
+<title>Working with isometric experiments in workloopR</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Working with isometric experiments in workloopR</h1>
+<h4 class="author">Vikram B. Baliga</h4>
+<h4 class="date">2021-05-04</h4>
+
+
+
+<p>The <code>workloopR</code> package also provides a function that can calculate the timing and magnitude of force during isometric experiments (twitch, tetanus) via the <code>isometric_timing()</code> function.</p>
+<p>To demonstrate, we will first load <code>workloopR</code> and use example data provided with the package. We’ll also load a couple packages within the <code>tidyverse</code> as well as <code>viridis</code> to help with data wrangling and plotting.</p>
+<div id="load-packages-and-data" class="section level2">
+<h2>Load packages and data</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(workloopR)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
+</div>
+<div id="visualize" class="section level2">
+<h2>Visualize</h2>
+<p>We’ll now import the <code>twitch.ddf</code> file included with <code>workloopR</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## The file twitch.ddf is included and therefore can be accessed via</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="do">## system.file(&quot;subdirectory&quot;,&quot;file_name&quot;,&quot;package&quot;) . We&#39;ll then use</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="do">## read_ddf() to import it, creating an object of class &quot;muscle_stim&quot;.</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>twitch_dat <span class="ot">&lt;-</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">system.file</span>(</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;extdata&quot;</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;twitch.ddf&quot;</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">package =</span> <span class="st">&#39;workloopR&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_ddf</span>()</span></code></pre></div>
+<p>Let’s plot Force vs. Time to visualize the time course of force development and relaxation.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>twitch_dat <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Time, <span class="at">y =</span> Force)) <span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">&quot;Force (mN)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">&quot;Time (sec)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAAAqFBMVEUAAAAAADoAAGYAOpAAZrY6AAA6ADo6AGY6kNtNTU1NTW5NTY5NbqtNjshmAABmADpmAGZmtv9uTU1uTW5uTY5ubo5ubqtuq+SOTU2OTW6OTY6Obk2OyP+QOgCQtpCQ2/+rbk2rbm6ryKur5OSr5P+2ZgC2///Ijk3I///bkDrb/7bb///kq27k///r6+v/tmb/yI7/25D/5Kv//7b//8j//9v//+T///+pSYRpAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAIeUlEQVR4nO2dDXvTNhSFBbTQMNYtZSxstAMGBTIKaZO2+v//bJY/YjuxdCRLduToHPY0a04k3765+rAVxUJSRolDBxC7CAiIgIAICIiAgAgIyBfQz0M7Qx+GgIBDQMAhIOAQEHAICDgEBBwCAg4BAYeAgENAwDkgILF/bAJqOgRkdoTYJzQ1QI8fLqW8fzt79WP7EC4K0XHwqQG6mV3mkG5+rR4CRnEEgNZv3l3K+7+/yfUf38qHgFFMH9Djx09Z2qz//CHv//pcPlT1BJDI/hMhKhpGFoBuFqpd3b7KyZQPXm9G2xEdR59UBmU586jLoBBRTB7QzUxpMVQfJCYPSBbD/OOHRTGKLcKOYqLr6FMENNQ8qAAkOhy32o52Ji26Dk9AtUNABOQXBQERkF8UBGQHSOw7brUdOSBJQDqHgAjILwoCMjuCgACgzuMT0NbZAhK7jmNtxw5IElC3Q0AE5BcFARGQXxRHDsh/4XK7phrr6qofoAaqnk59XLHjONYWZwb5R0FABOQXBQERkF8UBGQPSLQdx9qOH5AkoC6HgAjILwoCIiC/KAjIAZBoOY61JQBIEtC+0zosAe07BERAflG0AYmG41pbCoAkAe05BJQCoNvZ7JdvA+3VOAZAavNTvVk18J7VYwCkVG8UC7xfbOewonZcazssoCxnhtmzKoy/xiAbQOuLl58H2rN6LBlUp07gPavHAkh+vRynDxK9azscoLJRDbNndfewUwSktj1nfdAY86CJArISAQGFAiT61pYIIElAbYeAnAGJnrWlAkhOAtBS5DrTlg8WxRQBbc4rMkvx5L22ijBRdAAS/WobDdDm9y/1s61fjAoGSMYOqKcICCggIBE3oKwLqvTUtn31j6LrfYkc0FbXhxnFpgJoc24/gnlE0QlITADQSjz7ri0dMIrOrm8CgK7FibZs0Ci6AYnIAT1cibm2aNgougfPyAHdnboMX35RaADpJx0RAFo6Ny+PKDQkYgZ0+HmQNKXQ4QE5yXvdUreUGs8Sqx+gBqpeju6oPzu+xh3UNmoG3Z2O1MS0gLSNLApAD1fu3XRoQDpCUQDanDtPg8IDkt2tLApAD1cxAOomFAUguXKfKQ4AyO2OG6l10mVUe4iiAPRw5XIlyCcKBKhAZLXdN71OeivRUByAIumkWxJthQrA3mn3QS+i6KS7JHQat4mNdbLqDqg+N6pSyZBVPqHtKtC52G6Y6g/I/+1LvekegPar03HS/7FjAtKmvlH28UGnmlsaDrZ38O33pOZmAaF4P03Xg3ovPReH2x6oIrDNrT0qQbuNrj9JB8ri/eyorVLWA5WD2AgfXgjn9K2sO41NgKRa1Mg1wsJhOCfsYQCgHiIgIAICIiAgAgJKGdD6YjYb8D6rgZxxAS2FmC/Lz3eo3WHr158Hu89qIGdUQNfP/jufV2sbtwrHUPvFwjljAtqcz9U1s8aVad2Ow0Mvew6memXXCpDaRTfYfVYDOaM2saVqYpvz6lTj/u1CDnef1UDOuJ30qnkqtr7IxrDh7vUcyDncMF/wkUPdZzWUczhAxZ16LzkPakgtjDl+giEtQNeKjRuhpACVC4dOK/QEBJQUILlUaOp5kI3SAtSeB1kpMUDuSgrQeB9eCOgcoJN2UlKA5NJxL1TPKCYLaLxPdwR02EkDh4CAMy6gJedBxmc4k+a5GHAICDhsYsBhJw0cDvPACQXogGufw8qwstrnTFWmlEE5IPcNYwQEREBABAREQEApAdruV+CphvEZNxEQEAEBERAQAQEREBABAREQEAEBERAQAQEREBABAREQEAEBpQ0o397DvRpa3aob0XLPqlZfX/6bZRD3ixmkiHDPKgDEPasGaTNoqPimCIh9kEGKCPesGsR5EGfSOyIg4BAQcAgIOAQEHAICDgEBh4CAQ0DAISDgEBBwCAg4BAQcAgIOAQGHgIBDQMAhIOAQEHAICDjcswrkuLJqg+rQTpwZ5BcFAY3pEBBwCAg4BAQcAgIOAQGHgIBDQMAhIOAQEHAICDgEBBwCAg4BAYeAgENAwCEg4BAQcAgIOAQEnGgAca+GWdyzCsT9YkCJ7Fmt5QookT2r+06/DAodhYcTC6BE+qD+gBLZs9ofUCLzIA9Ag0bh4RAQcAgIOAQEHAICTuyAjl4EBERAQAQEREBABAREQEAEBERAQH0B1Vc/NNdBjGVk58U3c5n1xWx26Vbkdqa+S9Q1NLWAU6snoHoVSLceZCpTfguqUxl1vXf9ev+ar6GIehPcQ5M3swCA6iuwumuxpjLlt6A6lblV8X+1SKF2QM6hyfWbdwEA1dfwdVfzTWWkdRNr1251nHYRuwxqlHn8+ClEE6tXgXTrQaYy0hpQq4y6Lu5WZH3x0iayZpmbRZA+6BAZdP924VrEMunaf04QQJ59kDWgRpn1hdUYthuQTbfVKHMzU1rUVu9RbLEdxbrXg0xlpDWguowtn0YR+9bfCi1IBpUTh/zbcB3nQQUat3lQ9urirbVKh+1hsjJ2fVArtDCAkhEBAREQEAEBERAQAQFFAOjhqrxD8Mnd8/fG18111uY3U0EvRQBIyYym0PJE762efQ8YTVPTAWTMEkN2eSoqQNnPu+f/nApxdpf9mBetr7o191IliXq+aajHPLEGS6HoAJ1mf+lSqB9PvzxcnZRgFIqz8mV3p/PKUI/5feCt2mgvxQdoniPIf1mpJCkAFA93L4p0qowaS/mq8IoOUJ4j5Y9lMbqdqVcUBK6LFlUZq6r9FQk2hOIG1OhYqhTZnGedT2WkDmj1pO5Y6jaU/V9lpN7EHq6yTKlgXJ+VGdMwVCedd9gJddJNQPkoXmVRPpCvRPFEZWyH+eWRD/MWSnuiaKOkTzVslPTJarwiICACAiIgIAICIiAgAgL6H3pn4GmX+Fa1AAAAAElFTkSuQmCC" /><!-- --></p>
+<p>This plot reveals that the final row of the data has Force = 0 and is likely an artifact. We can also see that the most salient parts of the twitch occur between ~ 0.075 and ~ 0.2 seconds.</p>
+<p>We’ll just re-plot the salient parts of the twitch by setting new limits on the axes via <code>ggplot2::xlim()</code> and <code>ggplot2::ylim()</code>. Please note that this will not change any analyses - we are simply doing it for ease of visualizing patterns.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Re-plot</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>twitch_dat <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Time, <span class="at">y =</span> Force)) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="at">lwd =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlim</span>(<span class="fl">0.075</span>, <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylim</span>(<span class="dv">200</span>, <span class="dv">450</span>) <span class="sc">+</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">&quot;Time (sec)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">&quot;Force (mN)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>()</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: Removed 2750 row(s) containing missing values (geom_path).</span></span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>Looks better!</p>
+</div>
+<div id="basics-of-isometric_timing" class="section level2">
+<h2>Basics of <code>isometric_timing()</code></h2>
+<p>Now we’re ready to use <code>isometric_timing()</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Run the isometric_timing() function</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>twitch_analyzed <span class="ot">&lt;-</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  twitch_dat <span class="sc">%&gt;%</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">isometric_timing</span>()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>twitch_analyzed</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      file_id time_stim force_stim time_peak force_peak time_rising_10</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 twitch.ddf    0.1002    224.067    0.1141   412.4495         0.1048</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   force_rising_10 time_rising_90 force_rising_90 time_relaxing_90</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         244.389         0.1107        393.9015           0.1198</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   force_relaxing_90 time_relaxing_50 force_relaxing_50</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1           394.063           0.1311          318.2585</span></span></code></pre></div>
+<p>The function returns a new <code>data.frame</code> that provides information about the timing and magnitude of force at various intervals within the twitch. All returned values are absolute; in other words, time is measured from the beginning of the file and forces are returned in their actual magnitudes.</p>
+<p>The first five columns of this <code>data.frame</code> are fixed. They will return (in this order): 1) the ID of the file, 2) the time at which stimulation occurs, 3) magnitude of force when stimulation occurs, 4) time at which peak force occurs, and 5) magnitude of peak force.</p>
+<p>The function also provides data that help describe the rising and the relaxation phases of the twitch at certain “set points”. By default, in the rising phase the set points are at 10% and at 90% of peak force development. Timing and force magnitudes at these points are returned as columns in the <code>data.frame</code>. And for the relaxation phase, the time and magnitude of force when force has relaxed to 90% and 50% of peak force are given.</p>
+<p>The user has some flexibility in specifying how data are grabbed from the rising and falling phases. There are two arguments: <code>rising = c()</code> and <code>falling = c()</code>. Each of these arguments can be filled with a vector of any length. Within the vector, each of these “set points” must be a vector between 0 and 100, signifying the % of peak force development that is to be described.</p>
+<p>For example, if we’d like to describe the rising phase at six points (e.g. 5%, 10%, 25%, 50%, 75%, and 95% of peak force development):</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Change rising supply a custom set of force development set points</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>twitch_rising_custom <span class="ot">&lt;-</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  twitch_dat <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">isometric_timing</span>(<span class="at">rising =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">95</span>))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="do">## The returned `data.frame` contains the timing and force magnitudes</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="do">## of these set points in the &quot;..._rising_...&quot; columns</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>twitch_rising_custom</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      file_id time_stim force_stim time_peak force_peak time_rising_5</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 twitch.ddf    0.1002    224.067    0.1141   412.4495        0.1044</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   force_rising_5 time_rising_10 force_rising_10 time_rising_25 force_rising_25</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1        234.712         0.1048         244.389         0.1057         273.743</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   time_rising_50 force_rising_50 time_rising_75 force_rising_75 time_rising_95</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1          0.107             321         0.1087        366.1605         0.1118</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   force_rising_95 time_relaxing_90 force_relaxing_90 time_relaxing_50</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         403.579           0.1198           394.063           0.1311</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   force_relaxing_50</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1          318.2585</span></span></code></pre></div>
+<div id="tetanus-trials" class="section level3">
+<h3>Tetanus trials</h3>
+<p>The <code>isometric_timing()</code> function can also work on <code>tetanus</code> objects that have been imported via <code>read_ddf()</code>. Should a <code>tetanus</code> object be used, the set points for relaxing are automatically set to <code>relaxing = c()</code>, which excludes this argument from producing anything. Instead, the timing &amp; magnitude of force at stimulation, peak force, and specified points of the rising phase are returned. The idea of ‘relaxation’ is simply ignored.</p>
+<p>To demonstrate, we’ll use an example tetanus trial included in <code>workloopR</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>tetanus_analyzed <span class="ot">&lt;-</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">system.file</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;extdata&quot;</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;tetanus.ddf&quot;</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">package =</span> <span class="st">&#39;workloopR&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_ddf</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">isometric_timing</span>(<span class="at">rising =</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>))</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>tetanus_analyzed</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       file_id time_stim force_stim time_peak force_peak time_rising_25</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 tetanus.ddf    0.1002   141.0045    0.1364   2626.289         0.1135</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   force_rising_25 time_rising_50 force_rising_50 time_rising_75 force_rising_75</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1        763.4095         0.1184        1391.462         0.1236        2013.873</span></span></code></pre></div>
+</div>
+</div>
+<div id="computing-intervals" class="section level2">
+<h2>Computing intervals</h2>
+<p>The returned <code>data.frame</code> provides all timing and force magnitudes in absolute terms, i.e. time since the start of the file and actual force magnitudes. Often, we’d like to report characteristics of the twitch as intervals.</p>
+<p>To calculate, e.g. the interval between stimulation and peak force (often reported as “time to peak force”):</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Time to peak force from stimulation</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>twitch_analyzed<span class="sc">$</span>time_peak <span class="sc">-</span> twitch_analyzed<span class="sc">$</span>time_stim</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.0139</span></span></code></pre></div>
+</div>
+<div id="annotate-the-twitch-plot" class="section level2">
+<h2>Annotate the twitch plot</h2>
+<p>It is also good to plot some of these metrics and see if they pass the eye-test.</p>
+<p>We’ll use our analyzed twitch and the <code>viridis</code> package to supply colors to dots at key points.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Create a color pallete</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Generated using `viridis::viridis(6)`</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="do">## We use hard-coded values here just to avoid extra dependencies </span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>colz <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;#440154FF&quot;</span>,<span class="st">&quot;#414487FF&quot;</span>,<span class="st">&quot;#2A788EFF&quot;</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;#22A884FF&quot;</span>,<span class="st">&quot;#7AD151FF&quot;</span>,<span class="st">&quot;#FDE725FF&quot;</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>twitch_dat <span class="sc">%&gt;%</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Time, <span class="at">y =</span> Force)) <span class="sc">+</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_line</span>(<span class="at">lwd =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>   <span class="fu">xlim</span>(<span class="fl">0.075</span>, <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ylim</span>(<span class="dv">200</span>, <span class="dv">450</span>) <span class="sc">+</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>   <span class="fu">xlab</span>(<span class="st">&quot;Time (sec)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ylab</span>(<span class="st">&quot;Force (mN)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_point</span>(<span class="at">x =</span> twitch_analyzed<span class="sc">$</span>time_stim, </span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">y =</span> twitch_analyzed<span class="sc">$</span>force_stim,</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> colz[<span class="dv">1</span>], <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_point</span>(<span class="at">x =</span> twitch_analyzed<span class="sc">$</span>time_peak, </span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>              <span class="at">y =</span> twitch_analyzed<span class="sc">$</span>force_peak,</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> colz[<span class="dv">4</span>], <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_point</span>(<span class="at">x =</span> twitch_analyzed<span class="sc">$</span>time_rising_10, </span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">y =</span> twitch_analyzed<span class="sc">$</span>force_rising_10,</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> colz[<span class="dv">2</span>], <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_point</span>(<span class="at">x =</span> twitch_analyzed<span class="sc">$</span>time_rising_90, </span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>              <span class="at">y =</span> twitch_analyzed<span class="sc">$</span>force_rising_90,</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> colz[<span class="dv">3</span>], <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_point</span>(<span class="at">x =</span> twitch_analyzed<span class="sc">$</span>time_relaxing_90, </span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>              <span class="at">y =</span> twitch_analyzed<span class="sc">$</span>force_relaxing_90,</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> colz[<span class="dv">5</span>], <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_point</span>(<span class="at">x =</span> twitch_analyzed<span class="sc">$</span>time_relaxing_50, </span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>              <span class="at">y =</span> twitch_analyzed<span class="sc">$</span>force_relaxing_50,</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> colz[<span class="dv">6</span>], <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>   <span class="fu">theme_minimal</span>()</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: Removed 2750 row(s) containing missing values (geom_path).</span></span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>The plot has dots added for each of the six time&amp;force points that the function returns by default.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
